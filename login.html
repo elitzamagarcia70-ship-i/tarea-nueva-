@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iniciar sesión · Gestión de Documentos</title>
+<link rel="stylesheet" href="/assets/login.css">
+</head>
+<body class="login">
+<main class="card">
+  <div class="id">
+    <div class="shield" aria-hidden="true">
+      <svg viewBox="0 0 48 48" width="52" height="52" fill="none" stroke="#e6bcc6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 5 8 11v11c0 10 6.5 17.5 16 21 9.5-3.5 16-11 16-21V11L24 5Z"/>
+        <path d="M17 19h14M17 24h10M17 29h14" />
+      </svg>
+    </div>
+    <div>
+      <h1>UNACH</h1>
+      <p>Gestión de Documentos · Oficina Digital</p>
+    </div>
+  </div>
+
+  <h2>Iniciar sesión</h2>
+  <form id="f" autocomplete="on">
+    <label for="usuario">Usuario</label>
+    <input id="usuario" name="usuario" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus>
+    <label for="clave">Contraseña</label>
+    <input id="clave" name="clave" type="password" autocomplete="current-password" required>
+    <p class="error" id="error" role="alert"></p>
+    <button type="submit" id="entrar">Entrar</button>
+  </form>
+</main>
+<script>
+  // Si ya hay sesión, entra directo al sistema
+  fetch('/api/me').then(r => { if (r.ok) location.replace('/'); }).catch(() => {});
+
+  document.getElementById('f').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('error'), btn = document.getElementById('entrar');
+    err.textContent = ''; btn.disabled = true; btn.textContent = 'Entrando...';
+    try {
+      const r = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario: e.target.usuario.value, clave: e.target.clave.value }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok) return location.replace('/');
+      err.textContent = d.error || 'No se pudo iniciar sesión (código ' + r.status + ').';
+    } catch { err.textContent = 'No hay conexión con el servidor.'; }
+    btn.disabled = false; btn.textContent = 'Entrar';
+  });
+</script>
+</body>
+</html>
