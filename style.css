@@ -1,0 +1,219 @@
+/* =====================================================================
+   Gestión de Documentos · UNACH ETDA
+   Hoja de estilos MOBILE FIRST: los estilos base son los del celular y
+   los de tableta/escritorio se agregan con @media (min-width: 861px).
+   ===================================================================== */
+
+/* ---------- Variables (tema vino y blanco) ---------- */
+:root{
+  --navy:#6b1426;   /* vino oscuro: barra superior, menú, títulos */
+  --navy2:#85203a;  /* vino al pasar el mouse */
+  --blue:#9b2a45;   /* vino principal: botones y elemento activo */
+  --bg:#faf6f7;     /* fondo */
+  --line:#eadde0;   /* bordes */
+  --ink:#1c2733;
+  --muted:#5d6b7c;
+}
+
+/* ---------- Base ---------- */
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.4 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg);padding-bottom:78px} /* espacio para la barra inferior */
+input,select,textarea{font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;width:100%}
+textarea{resize:vertical;margin-top:6px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:6px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{background:#7d1f37}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--bg)}
+
+/* ---------- Barra superior ---------- */
+.top{background:var(--navy);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 16px}
+.icon{display:block;background:none;border:0;color:#fff;font-size:24px;cursor:pointer}
+.brand{display:flex;gap:10px;align-items:center;flex:1;min-width:0}
+.brand .logo{height:42px;width:auto}
+.uni{display:flex;flex-direction:column;justify-content:center;padding-right:10px;border-right:1px solid #ffffff55}
+.uni strong{font-size:18px;line-height:1.1;letter-spacing:.5px}
+.uni small{display:none}                       /* en celular se oculta para que todo quepa */
+.brand span{font-weight:600;line-height:1.2;font-size:14px}
+.top small{font-weight:400;opacity:.8;font-size:12px}
+.user{display:none;text-align:right;font-size:13px}
+
+/* ---------- Estructura y menú lateral (en celular es un panel que se desliza) ---------- */
+.layout{display:flex;min-height:calc(100vh - 66px)}
+nav{position:fixed;inset:0 auto 0 0;z-index:5;width:230px;background:var(--navy);padding:60px 0 16px;transform:translateX(-100%);transition:transform .2s}
+nav.open{transform:none}
+nav a{display:block;color:#fff;text-decoration:none;padding:14px 24px}
+nav a:hover{background:var(--navy2)}
+nav a.on{background:var(--blue)}
+main{flex:1;padding:12px;min-width:0}
+.panel{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px #6b142614}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+h1{margin:0;font-size:20px;color:var(--navy)}
+.hbtns{display:flex;gap:10px;width:100%}
+.hbtns .btn{flex:1}
+
+/* ---------- Filtros ---------- */
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;margin:16px 0 20px}
+.filters .btn,.filters label:first-child{grid-column:1/-1}
+.filters label,dialog label{display:block;font-size:14px;color:var(--ink)}
+.filters label input,.filters label select,dialog label input,dialog label select{margin-top:6px}
+
+/* ---------- Tabla: en celular cada fila es una tarjeta ---------- */
+table{width:100%;border-collapse:collapse}
+thead{display:none}
+tr{display:block;border:1px solid var(--line);border-radius:8px;margin-bottom:12px;padding:6px 0}
+td{display:flex;justify-content:space-between;gap:12px;border:0;padding:8px 14px;text-align:right;vertical-align:middle}
+td::before{content:attr(data-l);font-weight:600;color:var(--navy);text-align:left}
+th{background:#f6e9ec;color:var(--navy);text-align:left;padding:14px 12px}
+.tag{display:inline-block;padding:7px 16px;border-radius:20px;font-weight:600;font-size:14px}
+.Recibido{background:#d6f5e0;color:#1d7a3a}
+.En-proceso{background:#fdeeb3;color:#8a5a00}
+.Atendido{background:#d4e6fc;color:#1457b8}
+.acc{display:flex;gap:6px}
+.acc a,.acc button{background:none;border:0;cursor:pointer;font-size:18px;padding:4px 7px;text-decoration:none;color:var(--ink);border-radius:4px}
+.acc a:hover,.acc button:hover{background:var(--bg)}
+.empty{text-align:center;color:var(--muted);padding:32px}
+
+/* ---------- Pie y paginación ---------- */
+.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:20px;color:var(--muted)}
+#pager{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+#pager button{border:0;border-right:1px solid var(--line);background:#fff;padding:9px 14px;cursor:pointer;font:inherit}
+#pager button:last-child{border-right:0}
+#pager .cur{background:var(--blue);color:#fff}
+#pager button:disabled{opacity:.4;cursor:default}
+
+/* ---------- Ventanas (formulario y QR): en celular ocupan toda la pantalla ---------- */
+dialog{position:fixed;border:0;padding:24px;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0;overflow:auto;box-shadow:0 10px 40px #0006}
+dialog::backdrop{background:#6b142699}
+dialog h2{margin:0 0 12px;color:var(--navy)}
+dialog label{margin-bottom:12px}
+dialog label b{color:#d93025}
+.x{position:absolute;top:14px;right:14px;background:none;border:0;font-size:20px;cursor:pointer}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lbl{font-size:14px;margin-bottom:6px}
+.sel{position:relative;margin-top:6px}
+.sel select{padding-left:38px;margin:0}
+.dot{position:absolute;left:13px;top:50%;width:14px;height:14px;border-radius:50%;transform:translateY(-50%);pointer-events:none;background:#2e9e4f}
+.drop{background:#fbeff2;border:1px solid #e6bcc6;border-radius:8px;color:var(--navy);font:inherit;font-size:14px;font-weight:600;padding:16px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.drop span{font-size:28px;color:var(--blue)}
+.chip{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:12px 0}
+.chip[hidden]{display:none}
+.chip .ic{background:#e8453c;color:#fff;font:700 11px/1 inherit;font-style:normal;border-radius:4px;padding:9px 6px}
+.chip .ic.img{background:var(--blue)}
+.chip div{flex:1;min-width:0}
+.chip strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip small{color:var(--muted)}
+.chip button{background:none;border:0;font-size:18px;cursor:pointer}
+.save{width:100%;padding:15px;font-size:17px;margin-top:8px}
+.err{color:#c62828;min-height:1.2em;margin:4px 0}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+/* Ventana del QR (siempre pequeña) */
+.hint{color:var(--muted);font-size:13px;margin:6px 0}
+#qrBox{display:flex;justify-content:center;margin:14px 0}
+#qrBox img,#qrBox canvas{max-width:100%}
+#qrModal{width:min(380px,94vw);height:auto;max-height:92dvh;border-radius:12px}
+
+/* ---------- Barra de navegación inferior (solo celular) ---------- */
+.bottom{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:4;background:#fff;border-top:1px solid var(--line);justify-content:space-around;align-items:flex-end;padding:6px 0 8px}
+.bottom button{background:none;border:0;font:inherit;font-size:12px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.bottom button span{font-size:22px}
+.bottom .plus span{background:var(--blue);color:#fff;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:30px;margin-top:-26px;box-shadow:0 4px 12px #9b2a4555}
+
+@media (prefers-reduced-motion:reduce){nav{transition:none}}
+
+/* =====================================================================
+   TABLETA Y ESCRITORIO (861 px en adelante)
+   ===================================================================== */
+@media (min-width:861px){
+  body{padding-bottom:0}
+  .bottom,.icon{display:none}
+
+  /* barra superior */
+  .top{gap:16px;padding:12px 24px}
+  .brand{gap:16px}
+  .brand .logo{height:54px}
+  .uni{padding-right:16px}
+  .uni strong{font-size:24px}
+  .uni small{display:block;font-size:11px}
+  .brand span{font-size:16px}
+  .user{display:block}
+
+  /* menú lateral fijo a la izquierda */
+  nav{position:static;transform:none;flex-shrink:0;padding:16px 0}
+  main{padding:20px}
+  .panel{padding:24px}
+  h1{font-size:24px}
+  .hbtns{width:auto}
+  .hbtns .btn{flex:none}
+
+  /* filtros en una sola fila */
+  .filters{grid-template-columns:1fr 1fr 1fr auto}
+  .filters .btn,.filters label:first-child{grid-column:auto}
+
+  /* tabla clásica */
+  thead{display:table-header-group}
+  tr{display:table-row;border:0;border-radius:0;margin:0;padding:0}
+  td{display:table-cell;border-bottom:1px solid var(--line);padding:14px 12px;text-align:left}
+  td::before{content:none}
+
+  /* ventanas centradas */
+  dialog{width:min(520px,94vw);height:auto;max-height:92dvh;border-radius:12px}
+}
+
+/* ===== Reportes (mobile first) ===== */
+.rfilters{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;margin:8px 0 16px}
+.rfilters .btn{grid-column:1/-1}
+.rfilters label{display:block;font-size:14px}
+.rfilters label input{margin-top:6px}
+.periodo{color:var(--muted);margin:0 0 14px;font-size:14px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff}
+.card small{color:var(--muted);display:block}
+.card strong{display:block;font-size:28px;color:var(--navy);line-height:1.15}
+.card .pct{font-size:12px;color:var(--muted)}
+.grid2{display:grid;gap:16px}
+.box{border:1px solid var(--line);border-radius:10px;padding:16px}
+.box h2{margin:0 0 12px;font-size:16px;color:var(--navy)}
+.hbar{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;margin:12px 0;font-size:14px}
+.hbar .track{grid-column:1/-1;order:3}
+.hbar .track{background:#f3e8eb;border-radius:6px;height:14px;overflow:hidden}
+.hbar .fill{height:100%;border-radius:6px}
+.cols{display:flex;align-items:flex-end;gap:8px;min-height:170px}
+.cols .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;font-size:11px;color:var(--muted);white-space:nowrap}
+.cols .v{width:100%;max-width:46px;background:var(--blue);border-radius:6px 6px 0 0}
+.cols b{color:var(--ink)}
+.vacio{color:var(--muted);margin:0}
+.bottom a{background:none;border:0;font:inherit;font-size:12px;color:var(--muted);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:2px}
+.bottom a span{font-size:22px}
+.bottom a.plus span{background:var(--blue);color:#fff;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:30px;margin-top:-26px;box-shadow:0 4px 12px #9b2a4555}
+@media (min-width:861px){
+  .rfilters{grid-template-columns:1fr 1fr auto}
+  .rfilters .btn{grid-column:auto}
+  .cards{grid-template-columns:repeat(4,1fr)}
+  .grid2{grid-template-columns:1fr 1fr}
+  .hbar{grid-template-columns:190px 1fr auto;gap:10px;margin:9px 0}
+  .hbar .track{grid-column:auto;order:0}
+  .hbar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+/* Al imprimir o guardar como PDF solo se ve el reporte */
+@media print{
+  .top,nav,.bottom,.hbtns,.rfilters,.icon{display:none!important}
+  body{background:#fff;padding:0}
+  .panel{box-shadow:none;padding:0}
+  .box,.card{break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* ===== Visor de documentos ===== */
+a.btn{text-decoration:none;display:inline-block;text-align:center}
+#visor[open]{display:flex;flex-direction:column}
+#visorCuerpo{flex:1;min-height:0;overflow:auto;border:1px solid var(--line);border-radius:8px;background:#f3f3f3}
+#visorCuerpo iframe{width:100%;height:100%;border:0;display:block}
+#visorCuerpo img{max-width:100%;display:block;margin:0 auto}
+#visor .actions{flex-wrap:wrap;margin-top:12px}
+@media (min-width:861px){#visor{width:min(920px,96vw);height:90dvh}}
+
+/* Enlace de cerrar sesión en la barra superior */
+.user a{color:#fff;opacity:.9}
+.user a:hover{opacity:1}
