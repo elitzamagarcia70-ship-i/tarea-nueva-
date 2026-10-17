@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" class="cargando">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reportes · Gestión de Documentos</title>
+<link rel="stylesheet" href="/assets/style.css">
+<style>html.cargando{visibility:hidden}</style>
+</head>
+<body>
+<header class="top">
+  <button id="menuBtn" class="icon" aria-label="Menú">☰</button>
+  <div class="brand"><img src="/assets/logo-unach.png" alt="Escudo UNACH" class="logo"><div class="uni"><strong>UNACH</strong><small>Universidad Autónoma de Chiapas</small></div><span>Gestión de Documentos<br><small>Oficina Digital</small></span></div>
+  <div class="user"><span id="userName"></span><br><small>ETDA - Campus IV · <a href="/api/logout">Cerrar sesión</a></small></div>
+</header>
+
+<div class="layout">
+  <nav id="side">
+    <a href="/">Inicio</a>
+    <a href="/">Documentos</a>
+    <a href="/?nuevo=1">Nuevo Documento</a>
+    <a href="/?buscar=1">Buscar</a>
+    <a href="/reportes" class="on">Reportes</a>
+    <a href="#">Usuarios</a>
+    <a href="#">Configuración</a>
+    <a href="/api/logout">Cerrar sesión</a>
+  </nav>
+  <main>
+    <section class="panel">
+      <div class="head">
+        <h1>Reportes</h1>
+        <div class="hbtns">
+          <button class="btn ghost" id="btnCsv">⬇ Exportar CSV</button>
+          <button class="btn" id="btnPrint">🖨 Imprimir / PDF</button>
+        </div>
+      </div>
+
+      <div class="rfilters">
+        <label>Desde <input type="date" id="desde"></label>
+        <label>Hasta <input type="date" id="hasta"></label>
+        <button class="btn" id="btnGenerar">Generar reporte</button>
+      </div>
+
+      <p class="periodo" id="periodo"></p>
+      <div class="cards" id="cards"></div>
+
+      <div class="grid2">
+        <div class="box"><h2>Documentos por estatus</h2><div id="porEstatus"></div></div>
+        <div class="box"><h2>Documentos por mes</h2><div id="porMes"></div></div>
+        <div class="box"><h2>Remitentes más frecuentes</h2><div id="topRem"></div></div>
+        <div class="box"><h2>Destinatarios más frecuentes</h2><div id="topDest"></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="bottom">
+  <a href="/"><span>🏠</span>Inicio</a>
+  <a href="/"><span>📄</span>Documentos</a>
+  <a href="/?nuevo=1" class="plus"><span>+</span>Nuevo</a>
+  <a href="/reportes"><span>📊</span>Reportes</a>
+  <a href="/api/logout"><span>🚪</span>Salir</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/assets/sesion.js"></script>
+<script src="/assets/reportes.js?v=20261017"></script>
+</body>
+</html>
