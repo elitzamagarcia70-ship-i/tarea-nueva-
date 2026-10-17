@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" class="cargando">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestión de Documentos</title>
+<link rel="stylesheet" href="/assets/style.css">
+<style>html.cargando{visibility:hidden}</style>
+</head>
+<body>
+<!-- Barra superior: escudo, nombre del sistema y usuario -->
+<header class="top">
+  <button id="menuBtn" class="icon" aria-label="Menú">☰</button>
+  <div class="brand"><img src="/assets/logo-unach.png" alt="Escudo UNACH" class="logo"><div class="uni"><strong>UNACH</strong><small>Universidad Autónoma de Chiapas</small></div><span>Gestión de Documentos<br><small>Oficina Digital</small></span></div>
+  <div class="user"><span id="userName"></span><br><small>ETDA - Campus IV · <a href="/api/logout">Cerrar sesión</a></small></div>
+</header>
+
+<div class="layout">
+  <!-- Menú lateral (en celular se despliega con el botón ☰) -->
+  <nav id="side">
+    <a href="/">Inicio</a>
+    <a href="/" class="on">Documentos</a>
+    <a href="#" id="navNuevo">Nuevo Documento</a>
+    <a href="#" id="navBuscar">Buscar</a>
+    <a href="#" id="navQr">Acceso por QR</a>
+    <a href="/reportes">Reportes</a>
+    <a href="#">Usuarios</a>
+    <a href="#">Configuración</a>
+    <a href="/api/logout">Cerrar sesión</a>
+  </nav>
+  <main>
+    <section class="panel">
+      <div class="head">
+        <h1>Listado de Documentos</h1>
+        <div class="hbtns"><button class="btn ghost" id="btnQr">📱 Abrir en celular</button><button class="btn" id="btnNuevo">+ Nuevo Documento</button></div>
+      </div>
+      <input id="q" type="search" placeholder="Buscar por No. de oficio, asunto, remitente o destinatario...">
+      <div class="filters">
+        <label>Estatus
+          <select id="estatus"><option value="">Todos</option><option>Recibido</option><option>En proceso</option><option>Atendido</option></select>
+        </label>
+        <label>Desde <input type="date" id="desde"></label>
+        <label>Hasta <input type="date" id="hasta"></label>
+        <button class="btn" id="btnFiltrar">Filtrar</button>
+      </div>
+      <table>
+        <thead><tr><th>No. Oficio</th><th>Fecha</th><th>Asunto</th><th>Remitente</th><th>Destinatario</th><th>Estatus</th><th>Acciones</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="foot"><span id="info"></span><div id="pager"></div></div>
+    </section>
+  </main>
+</div>
+
+<!-- Formulario para registrar o editar un documento -->
+<dialog id="modal">
+  <form id="form" enctype="multipart/form-data">
+    <button type="button" class="x" id="cancel" aria-label="Cerrar">✕</button>
+    <h2 id="mTitle">📄 Registrar Documento</h2>
+    <input type="hidden" name="id" id="id">
+    <div class="two">
+      <label>No. de Oficio <b>*</b><input name="no_oficio" id="no_oficio" required placeholder="Ej. 0452/2026"></label>
+      <label>Fecha <b>*</b><input type="date" name="fecha" id="fecha" required></label>
+    </div>
+    <label>Asunto <b>*</b><textarea name="asunto" id="asunto" required maxlength="200" rows="2" placeholder="Descripción breve del asunto del documento"></textarea></label>
+    <div class="two">
+      <label>Remitente <b>*</b><input name="remitente" id="remitente" required placeholder="Nombre o dependencia"></label>
+      <label>Destinatario <b>*</b><input name="destinatario" id="destinatario" required placeholder="Nombre o área"></label>
+    </div>
+    <label>Estatus <b>*</b>
+      <div class="sel"><i class="dot" id="dot"></i>
+        <select name="estatus" id="mEstatus"><option>Recibido</option><option>En proceso</option><option>Atendido</option></select>
+      </div>
+    </label>
+    <div class="lbl">Documento (foto o PDF) <b>*</b></div>
+    <div class="two">
+      <button type="button" class="drop" id="btnFoto"><span>📷</span>Tomar foto<br>del documento</button>
+      <button type="button" class="drop" id="btnPdf"><span>⬆</span>Seleccionar<br>archivo PDF</button>
+    </div>
+    <input type="file" id="fotoIn" accept="image/*" capture="environment" hidden>
+    <input type="file" id="pdfIn" accept="application/pdf" hidden>
+    <div class="chip" id="chip" hidden>
+      <em class="ic" id="chipIc">PDF</em>
+      <div><strong id="chipName"></strong><small id="chipSize"></small></div>
+      <button type="button" id="chipX" aria-label="Quitar archivo">✕</button>
+    </div>
+    <p id="err" class="err" role="alert"></p>
+    <button class="btn save" id="btnGuardar">Guardar Documento</button>
+  </form>
+</dialog>
+
+<dialog id="qrModal">
+  <button type="button" class="x" id="qrClose" aria-label="Cerrar">✕</button>
+  <h2>📱 Abrir en el celular</h2>
+  <p class="hint">Escanea el código con la cámara del celular para abrir el sistema.</p>
+  <div id="qrBox"></div>
+  <label>Dirección <input id="qrUrl" value=""></label>
+  </dialog>
+
+<!-- Visor del documento dentro de la plataforma (PDF o imagen) -->
+<dialog id="visor">
+  <button type="button" class="x" id="visorClose" aria-label="Cerrar">✕</button>
+  <h2 id="visorTitulo">Documento</h2>
+  <div id="visorCuerpo"></div>
+  <div class="actions">
+    <a class="btn ghost" id="visorAbrir" target="_blank" rel="noopener">Abrir en otra pestaña</a>
+    <a class="btn" id="visorDescarga" download>⬇ Descargar</a>
+  </div>
+</dialog>
+
+<!-- Barra de navegación inferior (solo celular) -->
+<div class="bottom">
+  <button data-go="top"><span>🏠</span>Inicio</button>
+  <button data-go="top"><span>📄</span>Documentos</button>
+  <button class="plus" id="bNuevo"><span>+</span>Nuevo</button>
+  <button id="bBuscar"><span>🔍</span>Buscar</button>
+  <a href="/api/logout"><span>🚪</span>Salir</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/assets/sesion.js"></script>
+<script src="/assets/app.js?v=20261017"></script>
+</body>
+</html>
